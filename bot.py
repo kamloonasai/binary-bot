@@ -1,6 +1,7 @@
 import time
 import random
 import urllib.request
+import urllib.parse
 import json
 from datetime import datetime
 
@@ -21,10 +22,10 @@ last_signals = {}
 
 def send_telegram(message):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-    data = {"chat_id": CHAT_ID, "text": message, "parse_mode": "Markdown"}
+    data = json.dumps({"chat_id": CHAT_ID, "text": message, "parse_mode": "Markdown"}).encode()
     try:
-req = urllib.request.Request(url, json.dumps(data).encode(), {’Content-Type‘: ’application/json‘})
-urllib.request.urlopen(req, timeout=10)
+        req = urllib.request.Request(url, data, {'Content-Type': 'application/json'})
+        urllib.request.urlopen(req, timeout=10)
     except Exception as e:
         print(f"Error: {e}")
 
@@ -169,4 +170,3 @@ def run():
 
 if __name__ == "__main__":
     run()
-    
