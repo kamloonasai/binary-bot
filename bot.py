@@ -1,6 +1,7 @@
 import time
 import random
-import requests
+import urllib.request
+import json
 from datetime import datetime
 
 BOT_TOKEN = "8689426812:AAHfP7RNnQITZTTDyFsJ1zkNPVdDSUuXNJ8"
@@ -22,7 +23,8 @@ def send_telegram(message):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
     data = {"chat_id": CHAT_ID, "text": message, "parse_mode": "Markdown"}
     try:
-        requests.post(url, json=data, timeout=10)
+req = urllib.request.Request(url, json.dumps(data).encode(), {’Content-Type‘: ’application/json‘})
+urllib.request.urlopen(req, timeout=10)
     except Exception as e:
         print(f"Error: {e}")
 
